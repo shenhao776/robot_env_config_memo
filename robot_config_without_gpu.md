@@ -6,7 +6,7 @@ This guide provides setup instructions for an Ubuntu 22.04 system without a focu
 
 -----
 
-## **ZSH** 셸
+## **ZSH**
 
 This section covers the installation and configuration of the Zsh shell with Oh My Zsh and useful plugins.
 
