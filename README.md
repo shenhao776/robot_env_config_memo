@@ -1,5 +1,3 @@
------
-
 # Ubuntu 22.04 System General Configuration Memo 📝
 
 This memo provides a comprehensive guide for setting up an Ubuntu 22.04 system on the specified hardware, including shell customization, essential tools, NVIDIA driver installation, and Docker configuration for GPU support.
