@@ -1,36 +1,33 @@
-# Ubuntu 22.04 System General Configuration Memo 📝
+# Ubuntu 22.04 系统通用配置备忘录 📝
 
-[中文版点这里](./README_CN.md)
+本备忘录为在特定硬件上设置 Ubuntu 22.04 系统提供了全面的指南，内容包括 Shell 自定义、基本工具安装、NVIDIA 驱动程序安装以及针对 GPU 支持的 Docker 配置。
 
------
-This memo provides a comprehensive guide for setting up an Ubuntu 22.04 system on the specified hardware, including shell customization, essential tools, NVIDIA driver installation, and Docker configuration for GPU support.
-
-  * **Device**: ROG Flow Z13 13.4" (RTX 4060, Intel i9-13900H, 16GB RAM, 1TB SSD, GZ301VV-I9R4060)
-  * For a non-GPU setup, see: [Ubuntu 22.04 system general configuration memo (no gpu)](./robot_config_without_gpu.md)
+  * **设备**: ROG Flow Z13 13.4英寸 (RTX 4060, Intel i9-13900H, 16GB RAM, 1TB SSD, GZ301VV-I9R4060)
+  * 无 GPU 版本的配置，请参阅: [Ubuntu 22.04 系统通用配置备忘录 (无GPU版本)](./robot_config_without_gpu.md)
 
 -----
 
 ## **ZSH**
 
-This section covers the installation and configuration of Zsh with Oh My Zsh and useful plugins.
+本节介绍如何安装和配置 Zsh、Oh My Zsh 以及一些实用的插件。
 
 ```bash
 sudo apt update
 sudo apt install zsh git
-
-# Install Oh My Zsh
+ttps://www.google.com/search?q=
+# 安装 Oh My Zsh
 wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
 sh install.sh
 rm install.sh
 
-# Install some plugins: autosuggestions, highlighting
+# 安装插件：命令自动建议、语法高亮
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
-# Revise .zshrc to add plugins
+# 修改 .zshrc 以启用插件
 sed -i 's/^plugins=(git)$/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' ~/.zshrc
 
-# If ROS2 was installed, revise rosidl-argcomplete.zsh to prevent conflicts
+# 如果已安装 ROS2，修改 rosidl-argcomplete.zsh 以避免冲突
 sed -i 's/^autoload -U +X compinit && compinit/# &/' /opt/ros/humble/share/rosidl_cli/environment/rosidl-argcomplete.zsh
 
 source ~/.zshrc
@@ -38,9 +35,9 @@ source ~/.zshrc
 
 -----
 
-## **Tools** 🛠️
+## **工具** 🛠️
 
-Install essential command-line utilities.
+安装一些必要的命令行工具。
 
 ```bash
 sudo apt update
@@ -49,23 +46,23 @@ sudo apt install -y openssh-server vim net-tools
 
 -----
 
-## **Ignore Lid Closure** 💻
+## **忽略笔记本盒盖** 💻
 
-Configure the system to not suspend when the laptop lid is closed.
+配置系统在笔记本电脑盒盖时电脑不进入休眠模式。
 
-1.  Open the configuration file with Vim:
+1.  使用 Vim 打开配置文件：
     ```bash
     sudo vim /etc/systemd/logind.conf
     ```
-2.  Press `i` to enter insert mode.
-3.  Add the following lines to the end of the file:
+2.  按 `i` 键进入插入模式。
+3.  在文件末尾添加以下三行：
     ```
     HandleLidSwitch=ignore
     HandleLidSwitchExternalPower=ignore
     HandleLidSwitchDocked=ignore
     ```
-4.  Press `Esc`, then type `:wq` and press `Enter` to save and quit.
-5.  Reboot the system for the changes to take effect.
+4.  按 `Esc` 键，然后输入 `:wq` 并按 `Enter` 保存并退出。
+5.  重启系统使更改生效。
     ```bash
     sudo reboot
     ```
@@ -74,12 +71,12 @@ Configure the system to not suspend when the laptop lid is closed.
 
 ## **CUDA** 🚀
 
-This section details the installation of the NVIDIA driver and CUDA Toolkit 12.9 on Ubuntu 22.04.
+本节详细介绍在 Ubuntu 22.04 上安装 NVIDIA 驱动和 CUDA Toolkit 12.9 的过程。
 
-  * **Original Link**: [CUDA Toolkit 12.9.0 Download](https://developer.nvidia.com/cuda-12-9-0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local)
-  * **Note**: It's recommended to perform this on a fresh OS install where proprietary drivers were **not** installed during the Ubuntu setup process.
+  * **原始链接**: [CUDA Toolkit 12.9.0 下载页面](https://developer.nvidia.com/cuda-12-9-0-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local)
+  * **注意**: 建议在全新的操作系统上执行此操作，并且在安装 Ubuntu 系统时**不要**安装专有驱动程序。
 
-### 1\. CUDA Toolkit Installer
+### 1\. CUDA Toolkit 安装程序
 
 ```bash
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
@@ -91,16 +88,16 @@ sudo apt-get update
 sudo apt-get -y install cuda-toolkit-12-9
 ```
 
-### 2\. Driver Installer
+### 2\. 驱动程序安装
 
 ```bash
-# Install proprietary kernel modules
+# 安装专有内核模块
 sudo apt-get install -y cuda-drivers
 ```
 
-### 3\. Add to Environment Variables
+### 3\. 添加到环境变量
 
-Add the following lines to your `~/.zshrc` or `~/.bashrc` file.
+将以下内容添加到您的 `~/.zshrc` 或 `~/.bashrc` 文件中。
 
 ```bash
 export PATH=/usr/local/cuda-12.9/bin${PATH:+:${PATH}}
@@ -108,20 +105,20 @@ export LD_LIBRARY_PATH=/usr/local/cuda-12.9/lib64\
                       ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 ```
 
-### 4\. Reboot and Verify
+### 4\. 重启并验证
 
-Reboot your system. In your BIOS, ensure the display mode is set to use the dedicated NVIDIA GPU.
+重启您的系统。在 BIOS 中，确保显示模式设置为使用 NVIDIA 独立显卡。
 
 ```bash
-# Check the OpenGL renderer
-# The result should contain: "NVIDIA GeForce RTX 4060 Laptop GPU"
+# 检查 OpenGL 渲染器
+# 结果应包含 "NVIDIA GeForce RTX 4060 Laptop GPU"
 glxinfo | grep "OpenGL renderer"
 
-# Check the driver status with nvidia-smi
+# 使用 nvidia-smi 检查驱动状态
 nvidia-smi
 ```
 
-The output of `nvidia-smi` should look similar to this, showing the driver and CUDA versions, and GPU status. If `GPU-Util` is always 0%, the GPU is not being used for computation.
+`nvidia-smi` 的输出应与下图类似，显示驱动程序和 CUDA 版本以及 GPU 状态。如果 `GPU-Util` 一直为 0%，则表示 GPU 未被用于计算。
 
 ```txt
 Tue Jul 15 20:38:47 2025      
@@ -154,46 +151,46 @@ Tue Jul 15 20:38:47 2025
 
 ## **Docker** 🐳
 
-Follow the official documentation to install Docker Engine on Ubuntu.
+请遵循官方文档在 Ubuntu 上安装 Docker Engine。
 
-  * **Installation Guide**: [https://docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/)
+  * **安装指南**: [https://docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/)
 
 -----
 
-## **Run GPU in Docker**
+## **在 Docker 中使用 GPU**
 
-Configure Docker to use the NVIDIA GPU within containers.
+配置 Docker 以便在容器中使用 NVIDIA GPU。
 
 ```bash
-# Install Docker Compose (optional but recommended)
+# 安装 Docker Compose (可选，但推荐)
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.35.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
-# Add NVIDIA Container Toolkit repository
+# 添加 NVIDIA Container Toolkit 仓库
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
 curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
   sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
   sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 
-# Install NVIDIA Container Toolkit
+# 安装 NVIDIA Container Toolkit
 sudo apt-get update
 sudo apt-get install -y nvidia-container-toolkit
 
-# Configure Docker to use the NVIDIA runtime
+# 配置 Docker 使用 NVIDIA runtime
 sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
 
-# --- Verification ---
-# 1. Run nvidia-smi in a container
+# --- 验证 ---
+# 1. 在容器中运行 nvidia-smi
 sudo docker run --rm --gpus all nvidia/cuda:12.8.0-base-ubuntu24.04 nvidia-smi
 
-# 2. PyTorch CUDA verification
+# 2. PyTorch CUDA 验证
 sudo docker run --gpus all -it pytorch/pytorch:latest python -c "import torch; print('CUDA available:', torch.cuda.is_available()); print('CUDA device count:', torch.cuda.device_count())"
 ```
 
-### Docker Run Sample with GUI Support
+### 支持 GUI 的 Docker 运行示例
 
-This is an example command to run a container with GPU acceleration and GUI forwarding.
+这是一个运行具有 GPU 加速和图形界面转发功能的容器的示例命令。
 
 ```bash
 xhost +
@@ -207,8 +204,8 @@ docker run -it -v /tmp/.x11-unix:/tmp/.x11-unix \
 
 -----
 
-## **AMR2 Dockerfile Usage**
+## **AMR2 Dockerfile 使用说明**
 
-For instructions on using the specific AMR2 Dockerfile for x86 systems, refer to the separate guide.
+关于如何使用 AMR2 的 x86 Dockerfile，请参考独立的指南文档。
 
-  * **Link**: [AMR2 Dockerfile (X86) Usage Guide](./amr2_dockerfile.md)
+  * **链接**: [AMR2 Dockerfile (X86) 使用指南](./amr2_dockerfile.md)
