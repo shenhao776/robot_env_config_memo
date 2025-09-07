@@ -209,4 +209,4 @@ docker run -it -v /tmp/.x11-unix:/tmp/.x11-unix \
 
 For instructions on using the specific AMR2 Dockerfile for x86 systems, refer to the separate guide.
 
-  * **Link**: [AMR2 Dockerfile (X86) Usage Guide](https://github.com/shenhao776/memo/edit/main/amr2_dockerfile.md)
+  * **Link**: [AMR2 Dockerfile (X86) Usage Guide](https://github.com/shenhao776/memo/blob/main/amr2_dockerfile.md)
