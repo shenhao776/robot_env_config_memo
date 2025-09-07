@@ -4,11 +4,11 @@ This memo provides a comprehensive guide for setting up an Ubuntu 22.04 system o
 
   * **Device**: ROG Flow Z13 13.4" (RTX 4060, Intel i9-13900H, 16GB RAM, 1TB SSD, GZ301VV-I9R4060)
   * For a non-GPU setup, see: [Ubuntu 22.04 syOf course. Here is your configuration memo converted into a clean Markdown format.
-stem general configuration memo (no gpu)](https://www.google.com/search?q=./path_to_no_gpu_version.md)
+stem general configuration memo (no gpu)](https://github.com/shenhao776/memo/blob/main/robot_config_without_gpu.md)
 
 -----
 
-## **ZSH** 셸
+## **ZSH**
 
 This section covers the installation and configuration of Zsh with Oh My Zsh and useful plugins.
 
