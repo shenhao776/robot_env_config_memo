@@ -2,7 +2,7 @@
 
 这是解决当前问题的**核心**。
 
-1.  打开您的 **bridge 工作空间**中的 `bridge_ws/src/ros1_bridge/package.xml` 文件。
+1.  打开的 **bridge 工作空间**中的 `bridge_ws/src/ros1_bridge/package.xml` 文件。
 
 2.  在文件中添加一行，明确声明对 `livox_ros_driver2` 的依赖。这会告诉 `colcon` 在构建 `ros1_bridge` 时，需要 `livox_ros_driver2` 的信息。
 
@@ -21,7 +21,7 @@
 
 #### 第 2 步：清理并严格按顺序重新编译
 
-修改配置后，为了确保万无一失，我们从头开始清理并编译所有相关的包。
+修改配置后，为了确保万无一失，从头开始清理并编译所有相关的包。
 
 1.  **清理工作空间**
 
@@ -76,4 +76,4 @@
     colcon build --symlink-install --packages-select ros1_bridge --cmake-force-configure
     ```
 
-通过在 `package.xml` 中添加明确的依赖声明，您就补全了缺失的配置环节。这样，`colcon` 在执行正确的编译流程时，就能为编译器提供所有必要的信息，从而成功找到并包含 `custom_msg.hpp` 头文件。
+通过在 `package.xml` 中添加明确的依赖声明，就补全了缺失的配置环节。这样，`colcon` 在执行正确的编译流程时，就能为编译器提供所有必要的信息，从而成功找到并包含 `custom_msg.hpp` 头文件。
