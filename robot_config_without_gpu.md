@@ -80,4 +80,4 @@ Follow the official documentation to install Docker Engine on Ubuntu.
 
 For instructions on using the specific AMR2 Dockerfile for x86 systems, refer to the separate guide.
 
-  * **Reference Link**: [AMR2 Dockerfile (X86) Usage Guide](./amr2_dockerfile.md)
+  * **Reference Link**: [AMR2 Dockerfile (X86) Usage Guide](./docker/amr2_dockerfile.md)

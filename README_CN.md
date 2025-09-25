@@ -208,4 +208,4 @@ docker run -it -v /tmp/.x11-unix:/tmp/.x11-unix \
 
 关于如何使用 AMR2 的 x86 Dockerfile，请参考独立的指南文档。
 
-  * **链接**: [AMR2 Dockerfile (X86) 使用指南](./amr2_dockerfile.md)
+  * **链接**: [AMR2 Dockerfile (X86) 使用指南](./docker/amr2_dockerfile.md)
